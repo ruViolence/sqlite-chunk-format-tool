@@ -183,6 +183,9 @@ public class Main {
                         if (!levelCompound.hasKeyOfType("LastUpdate", 4)) {
                             levelCompound.setLong("LastUpdate", 0);
                         }
+                        if (!levelCompound.hasKeyOfType("SkyLight", 7)) {
+                            levelCompound.setByteArray("SkyLight", new byte[2048]);
+                        }
                     }
 
                     RegionFileCache.e(dimensionDir, chunkX, chunkZ, chunkTag);
