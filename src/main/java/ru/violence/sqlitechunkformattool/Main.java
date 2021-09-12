@@ -2,6 +2,7 @@ package ru.violence.sqlitechunkformattool;
 
 import net.minecraft.server.v1_12_R1.ChunkCoordIntPair;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.NBTTagList;
 import net.minecraft.server.v1_12_R1.RegionFileCache;
 import net.minecraft.server.v1_12_R1.SQLiteChunkLoader;
 
@@ -86,6 +87,7 @@ public class Main {
             return;
         }
 
+        boolean hasSkyLight = !dimensionDir.getName().startsWith("DIM");
         SQLiteChunkLoader sqLiteChunkLoader = new SQLiteChunkLoader(dimensionDir, compressionLevel);
 
         AtomicInteger done = new AtomicInteger(0);
@@ -125,6 +127,12 @@ public class Main {
 
                                 NBTTagCompound chunkTag = RegionFileCache.d(dimensionDir, chunkX, chunkZ);
                                 if (chunkTag != null) {
+                                    if (!hasSkyLight) {
+                                        NBTTagList sectionsTagList = chunkTag.getCompound("Level").getList("Sections", 10);
+                                        for (int i = 0; i < sectionsTagList.size(); i++) {
+                                            sectionsTagList.get(i).remove("SkyLight");
+                                        }
+                                    }
                                     sqLiteChunkLoader.writeToDB(new ChunkCoordIntPair(chunkX, chunkZ), chunkTag);
                                 }
                             }
