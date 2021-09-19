@@ -1,6 +1,8 @@
 package ru.violence.sqlitechunkformattool;
 
 import net.minecraft.server.v1_12_R1.ChunkCoordIntPair;
+import net.minecraft.server.v1_12_R1.DataConverterManager;
+import net.minecraft.server.v1_12_R1.DataConverterTypes;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.NBTTagList;
 import net.minecraft.server.v1_12_R1.RegionFileCache;
@@ -43,6 +45,8 @@ public class Tasker {
                 .filter(Tasker::isRegionFile)
                 .count();
 
+        DataConverterManager dataFixer = new DataConverterManager(1343);
+
         Files.walk(regionDir.toPath(), 1)
                 .skip(1) // Skip region folder
                 .filter(Files::isRegularFile)
@@ -73,6 +77,8 @@ public class Tasker {
 
                                 NBTTagCompound chunkTag = RegionFileCache.d(dimensionDir, chunkX, chunkZ);
                                 if (chunkTag != null) {
+                                    // Upgrade old chunks
+                                    chunkTag = dataFixer.a(DataConverterTypes.CHUNK, chunkTag);
                                     if (!hasSkyLight) {
                                         NBTTagList sectionsTagList = chunkTag.getCompound("Level").getList("Sections", 10);
                                         for (int i = 0; i < sectionsTagList.size(); i++) {
