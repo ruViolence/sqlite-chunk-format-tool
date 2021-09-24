@@ -48,6 +48,7 @@ public class Main {
         }
 
         File regionDir = new File(dimensionDir, "region");
+        long startTime = System.currentTimeMillis();
 
         if (task.equals("sqlite")) {
             Tasker.processSQLiteTask(compressionLevel, dimensionDir, regionDir);
@@ -55,7 +56,9 @@ public class Main {
             Tasker.processRegionTask(compressionLevel, dimensionDir, regionDir);
         } else {
             System.out.println("Available tasks: sqlite, region");
+            return;
         }
+        System.out.println("Successful (took " + ((System.currentTimeMillis() - startTime) / 1000) + " s)");
     }
 
     @SuppressWarnings("ConstantConditions")
