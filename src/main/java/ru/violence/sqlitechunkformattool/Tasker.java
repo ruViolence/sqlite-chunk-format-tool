@@ -39,6 +39,10 @@ public class Tasker {
     private static final byte[] emptySkyLight = new byte[2048];
 
     static void processSQLiteTask(int compressionLevel, File dimensionDir, File regionDir) throws Throwable {
+        if (!regionDir.exists()) {
+            System.out.println("region directory does not exists");
+            return;
+        }
         if (new File(dimensionDir, "region.db").exists()
                 || new File(dimensionDir, "region.db-shm").exists()
                 || new File(dimensionDir, "region.db-wal").exists()) {
