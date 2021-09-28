@@ -255,7 +255,7 @@ public class Tasker {
                 try {Thread.sleep(1000);} catch (InterruptedException e) {return;}
                 int doneL = done.get();
                 if (doneL >= total) return;
-                System.out.println("Processing (" + Utils.calcPercentage(doneL, total) + "% / 100%) (" + doneL + " / " + total + ")");
+                System.out.println("Processing (" + Utils.calcPercentage(doneL, total) + "%) (" + doneL + " / " + total + ")");
             }
         });
         logThread.setDaemon(true);
